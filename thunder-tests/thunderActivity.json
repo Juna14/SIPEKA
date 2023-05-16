@@ -1,0 +1,69 @@
+[
+  {
+    "_id": "b6f4956f-8770-4990-9b10-237f83582d30",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://api-gerbangna.itk.ac.id/api/referensi/pegawai-pt",
+    "url": "http://sister.itk.ac.id/ws.php/1.0/referensi/kategori_kegiatan?tipe=list&menu=penelitian",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-16T11:17:41.030Z",
+    "modified": "2023-04-16T22:44:04.595Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [
+      {
+        "name": "tipe",
+        "value": "list",
+        "isPath": false
+      },
+      {
+        "name": "menu",
+        "value": "penelitian",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyNzJmYmMwMi1jZjY0LTRhZDktOTM2My0zM2FmZDRkNTUxOTgiLCJpc3MiOiJodHRwOlwvXC9zaXN0ZXIuaXRrLmFjLmlkXC93cy5waHBcLzEuMFwvYXV0aG9yaXplIiwiaWF0IjoxNjgxNjg4MjcxLCJleHAiOjE2ODE2OTE4NzEsIm5iZiI6MTY4MTY4ODI3MSwianRpIjoiY2MyMjMxMzBmYWViOTg5NCJ9.HaXGGGMx-BPSGv3jcnS8IGUSzTTywIw7mUOmaC0v4jg"
+    },
+    "tests": []
+  },
+  {
+    "_id": "0c66fdee-d245-4aad-aa70-f114ea9d8449",
+    "colId": "history",
+    "containerId": "",
+    "name": "https://api-gerbangna.itk.ac.id/api/data-pribadi/lain",
+    "url": "https://api-gerbangna.itk.ac.id/api/referensi/pegawai-pt",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-03-16T11:22:29.223Z",
+    "modified": "2023-03-16T11:44:11.952Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      },
+      {
+        "name": "User-Agent",
+        "value": "Thunder Client (https://www.thunderclient.com)",
+        "isDisabled": true
+      }
+    ],
+    "params": [],
+    "auth": {
+      "type": "bearer",
+      "bearer": "9|BV92PyNSWZl7ZT2Jr5Hqe5Xa0X0GZMeuJDzJAWtI"
+    },
+    "tests": []
+  }
+]

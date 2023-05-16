@@ -1,0 +1,103 @@
+[
+  {
+    "_id": "8ded7190-88df-4d74-a306-e672b783bd12",
+    "colName": "Juned",
+    "created": "2023-03-16T12:07:34.145Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "9277b519-1db0-40b7-a308-9441de3258ec",
+        "name": "data-pribadi",
+        "containerId": "",
+        "created": "2023-03-16T12:08:18.852Z",
+        "sortNum": 10000
+      },
+      {
+        "_id": "9194d798-aade-4be5-a990-568dfcad8051",
+        "name": "inpassing",
+        "containerId": "",
+        "created": "2023-03-17T09:01:34.517Z",
+        "sortNum": 20000
+      },
+      {
+        "_id": "b39d8aeb-29b7-4ed7-84ca-795e34912973",
+        "name": "jabatan-fungsional",
+        "containerId": "",
+        "created": "2023-03-17T09:01:46.349Z",
+        "sortNum": 30000
+      },
+      {
+        "_id": "85628a2d-6587-4cd3-a5d5-41d31b0a145a",
+        "name": "kepangkatan",
+        "containerId": "",
+        "created": "2023-03-17T12:52:55.085Z",
+        "sortNum": 40000
+      },
+      {
+        "_id": "76fb7bc5-9a9b-462a-b6ba-22abbd47cdce",
+        "name": "penugasan",
+        "containerId": "",
+        "created": "2023-03-17T12:57:05.756Z",
+        "sortNum": 50000
+      },
+      {
+        "_id": "bb640def-8906-457a-a144-4fa533463a2c",
+        "name": "penelitian",
+        "containerId": "",
+        "created": "2023-03-17T12:58:55.031Z",
+        "sortNum": 60000
+      },
+      {
+        "_id": "cbf8371e-03ed-43c0-a81e-31a46710db29",
+        "name": "publikasi",
+        "containerId": "",
+        "created": "2023-03-17T12:59:47.472Z",
+        "sortNum": 70000
+      },
+      {
+        "_id": "6f206c7a-60b4-4a52-9b37-c838c236d2ea",
+        "name": "paten",
+        "containerId": "",
+        "created": "2023-03-17T13:00:34.922Z",
+        "sortNum": 80000
+      },
+      {
+        "_id": "9c137eaf-cf15-4071-ae55-a6a92fff8d4f",
+        "name": "paten Copy",
+        "containerId": "",
+        "created": "2023-03-17T13:01:05.507Z",
+        "sortNum": 90000
+      },
+      {
+        "_id": "fc09e9a9-cf9e-4ee5-a9ac-431df40434d3",
+        "name": "pengabdian",
+        "containerId": "",
+        "created": "2023-03-17T13:01:10.610Z",
+        "sortNum": 90000
+      },
+      {
+        "_id": "eae0a1a5-7aca-4d2f-9eb8-8211694e2099",
+        "name": "jurnal",
+        "containerId": "",
+        "created": "2023-03-17T13:01:48.161Z",
+        "sortNum": 100000
+      }
+    ],
+    "settings": {
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json"
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": "9|BV92PyNSWZl7ZT2Jr5Hqe5Xa0X0GZMeuJDzJAWtI"
+      },
+      "tests": [],
+      "options": {
+        "baseUrl": "https://api-gerbangna.itk.ac.id/api"
+      }
+    }
+  }
+]
