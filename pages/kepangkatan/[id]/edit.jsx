@@ -1,10 +1,5 @@
-import {
-  FormCreateKepangkatan,
-  MainLayout,
-  Nav,
-  TabRiwayatAjuanPerubahanData,
-} from "@/components";
-import { fetchDetailKepangkatan } from "@/helper/api/api";
+import { FormCreateKepangkatan, MainLayout, Nav } from "@/components";
+import { fetchDetailKepangkatan } from "@/helper/api/apiSister";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React from "react";
@@ -13,7 +8,7 @@ const KepangkatanEdit = () => {
   const router = useRouter();
   const { id } = router.query;
   const {
-    data: Kepangkatan,
+    data: kepangkatan,
     error,
     isLoading,
   } = useQuery({
@@ -24,16 +19,16 @@ const KepangkatanEdit = () => {
   return (
     <MainLayout>
       <div className="flex flex-col gap-8">
-        <Nav title={"Edit Riwayat Golongan/Pangkat"} />
+        <Nav title={"Ubah Riwayat Golongan/Pangkat"} />
         <div className="flex flex-col gap-4 dark:text-white w-full h-full">
-          <h1 className="text-md font-bold uppercase">
-            Form Edit Riwayat Golongan/Pangkat
+          <h1 className="text-md font-bold capitalize">
+            Formulir Ubah Riwayat Golongan/Pangkat
           </h1>
           <div className="grid grid-flow-col gap-4 bg-white dark:bg-slate-800 px-4 py-8 rounded-xl ">
             {isLoading ? (
-              "Loading..."
+              "Memuat..."
             ) : (
-              <FormCreateKepangkatan key={1} initialValues={Kepangkatan.data} />
+              <FormCreateKepangkatan initialValues={kepangkatan} />
             )}
           </div>
         </div>

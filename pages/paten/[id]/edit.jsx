@@ -1,4 +1,4 @@
-import { FormCreatePublikasi, MainLayout, Nav } from "@/components";
+import { FormCreatePaten, MainLayout, Nav } from "@/components";
 import { fetchDetailPublikasi } from "@/helper/api/apiSister";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -9,8 +9,8 @@ const PublikasiEdit = () => {
   const { id } = router.query;
   useEffect(() => {}, [router.isReady]);
 
-  const { data: publikasi, isLoading } = useQuery({
-    queryKey: ["publikasi", id],
+  const { data: paten, isLoading } = useQuery({
+    queryKey: ["paten", id],
     queryFn: async () => await fetchDetailPublikasi(id),
     networkMode: "offlineFirst",
   });
@@ -18,14 +18,16 @@ const PublikasiEdit = () => {
   return (
     <MainLayout>
       <div className="flex flex-col gap-8">
-        <Nav title={"Edit Publikasi"} />
+        <Nav title={"Ubah Publikasi"} />
         <div className="flex flex-col gap-4 dark:text-white w-full h-full">
-          <h1 className="text-md font-bold uppercase">Form Edit Publikasi</h1>
+          <h1 className="text-md font-bold capitalize">
+            Formulir Ubah Publikasi
+          </h1>
           <div className="flex flex-col gap-4 bg-white dark:bg-slate-800 px-4 py-8 rounded-xl ">
             {isLoading ? (
-              "Loading..."
+              "Memuat..."
             ) : (
-              <FormCreatePublikasi initialValues={publikasi} />
+              <FormCreatePaten initialValues={paten} />
             )}
           </div>
         </div>

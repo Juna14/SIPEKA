@@ -23,7 +23,7 @@ const SidebarItem = (props) => {
         <div className="w-8 h-8 rounded-md flex items-center justify-center group-hover:shadow-xl">
           <i className={props.icon}></i>
         </div>
-        <p>{props.title}</p>
+        <p className="capitalize">{props.title}</p>
         {props.subitem && (
           <i
             className={`${

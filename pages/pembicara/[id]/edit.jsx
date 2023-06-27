@@ -18,12 +18,14 @@ const PengabdianEdit = () => {
   return (
     <MainLayout>
       <div className="flex flex-col gap-8">
-        <Nav title={"Edit Pengabdian"} />
+        <Nav title={"Ubah Pengabdian"} />
         <div className="flex flex-col gap-4 dark:text-white w-full h-full">
-          <h1 className="text-md font-bold uppercase">Form Edit Pengabdian</h1>
+          <h1 className="text-md font-bold capitalize">
+            Formulir Ubah Pengabdian
+          </h1>
           <div className="flex flex-col gap-4 bg-white dark:bg-slate-800 px-4 py-8 rounded-xl ">
             {isLoading ? (
-              "Loading..."
+              "Memuat..."
             ) : (
               <FormCreatePengelolaJurnal initialValues={pengabdian_jurnal} />
             )}

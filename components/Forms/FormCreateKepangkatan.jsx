@@ -1,25 +1,30 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import {
-  Button,
-  GolonganPangkatSelection,
-  Input,
-  MultipleUploadFile,
-  Select,
-} from "..";
+import { Button, Input, MultipleUploadFile, Select, Selector } from "..";
 import * as yup from "yup";
-import { createUser, fetchListInpassing } from "@/helper/api/api";
-import { useQuery } from "@tanstack/react-query";
+import { fetchGolonganPangkat } from "@/helper/api/apiSister";
 
 const schema = yup.object().shape({
-  pangkat_golongan: yup.string().required("golongan pangkat wajib di isi."),
-  sk: yup.string().required("sk wajib di isi."),
-  tanggal_sk: yup.string().required("kelebihan pengajaran sk wajib di isi."),
-  tanggal_mulai: yup.string().required("terhitung mulai tanggal wajib di isi."),
-  masa_kerja_tahun: yup.string().required("kelebihan penelitian wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  pangkat_golongan: yup.string().required("golongan pangkat wajib diisi."),
+  sk: yup.string().required("sk wajib diisi."),
+  tanggal_sk: yup.string().required("kelebihan pengajaran sk wajib diisi."),
+  tanggal_mulai: yup.string().required("terhitung mulai tanggal wajib diisi."),
+  masa_kerja_tahun: yup.string().required("kelebihan penelitian wajib diisi."),
   masa_kerja_bulan: yup
     .string()
-    .required("kelebihan pengabdian masyarakat wajib di isi."),
+    .required("kelebihan pengabdian masyarakat wajib diisi."),
 });
 
 const FormCreateKepangkatan = ({ initialValues }) => {
@@ -28,7 +33,21 @@ const FormCreateKepangkatan = ({ initialValues }) => {
       <Formik
         enableReinitialize
         initialValues={{
-          pangkat_golongan: initialValues?.id_pangkat_golongan || "",
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
+          pangkat_golongan: initialValues?.pangkat_golongan || "",
+          id_pangkat_golongan: initialValues?.id_pangkat_golongan || "",
           sk: initialValues?.sk || "",
           tanggal_sk: initialValues?.tanggal_sk || "",
           tanggal_mulai: initialValues?.tanggal_mulai || "",
@@ -38,14 +57,33 @@ const FormCreateKepangkatan = ({ initialValues }) => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
-            <GolonganPangkatSelection
-              label="jabatan fungsional"
-              name="pangkat_golongan"
-              value={initialValues?.id_pangkat_golongan}
-              errors={errors.pangkat_golongan}
-              touched={touched.pangkat_golongan}
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
+            <Selector
+              label="Golongan/Pangkat"
+              placeholder={"Pilih Golongan/Pangkat"}
+              name={"id_pangkat_golongan"}
+              errors={errors.id_pangkat_golongan}
+              touched={touched.id_pangkat_golongan}
+              queryKey={"fetchGolonganPangkat"}
+              queryFn={() => fetchGolonganPangkat()}
+              onChange={setFieldValue}
+              labelKey={"nama"}
+              valueKey={"id"}
+              values={{
+                id: values.id_pangkat_golongan || "",
+                nama: values.pangkat_golongan || "",
+              }}
             />
             <Input
               label="nomor sk"
@@ -53,6 +91,7 @@ const FormCreateKepangkatan = ({ initialValues }) => {
               type="text"
               errors={errors.sk}
               touched={touched.sk}
+              value={values.sk}
             />
             <Input
               label="terhitung mulai tanggal"
@@ -60,6 +99,7 @@ const FormCreateKepangkatan = ({ initialValues }) => {
               type="date"
               errors={errors.tanggal_mulai}
               touched={touched.tanggal_mulai}
+              value={values.tanggal_mulai}
             />
             <Input
               label="tanggal sk"
@@ -67,6 +107,7 @@ const FormCreateKepangkatan = ({ initialValues }) => {
               type="date"
               errors={errors.tanggal_sk}
               touched={touched.tanggal_sk}
+              value={values.tanggal_sk}
             />
             <Input
               label="masa kerja (tahun)"
@@ -74,6 +115,7 @@ const FormCreateKepangkatan = ({ initialValues }) => {
               type="number"
               errors={errors.masa_kerja_tahun}
               touched={touched.masa_kerja_tahun}
+              value={values.masa_kerja_tahun}
             />
             <Input
               label="masa kerja (bulan)"
@@ -81,12 +123,18 @@ const FormCreateKepangkatan = ({ initialValues }) => {
               type="number"
               errors={errors.masa_kerja_bulan}
               touched={touched.masa_kerja_bulan}
+              value={values.masa_kerja_bulan}
             />
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

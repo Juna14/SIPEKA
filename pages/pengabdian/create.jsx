@@ -1,22 +1,17 @@
-import {
-  FormCreatePenelitian,
-  MainLayout,
-  Nav,
-  TabRiwayatAjuanPerubahanData,
-} from "@/components";
+import { FormCreatePengabdian, MainLayout, Nav } from "@/components";
 import React from "react";
 
-const PenelitianCreate = () => {
+const PengabdianCreate = () => {
   return (
     <MainLayout>
       <div className="flex flex-col gap-8">
-        <Nav title={"Tambah Penelitian"} />
+        <Nav title={"Tambah Pengabdian"} />
         <div className="flex flex-col gap-4 dark:text-white w-full h-full">
-          <h1 className="text-md font-bold uppercase">
-            Form Tambah Penelitian
+          <h1 className="text-md font-bold capitalize">
+            Formulir Tambah Pengabdian
           </h1>
           <div className="grid grid-flow-col gap-4 bg-white dark:bg-slate-800 px-4 py-8 rounded-xl ">
-            <FormCreatePenelitian />
+            <FormCreatePengabdian />
           </div>
         </div>
       </div>
@@ -24,4 +19,4 @@ const PenelitianCreate = () => {
   );
 };
 
-export default PenelitianCreate;
+export default PengabdianCreate;

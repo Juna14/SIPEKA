@@ -6,20 +6,23 @@ import React, { useEffect, useState } from "react";
 
 const FotoProfil = () => {
   const [imageSrc, setImageSrc] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const fetchImage = async () => {
-      const response = await apiSister.get(`/data_pribadi/foto/${id}`, {
-        responseType: "arraybuffer",
-      });
+      try {
+        const response = await apiSister.get(`/data_pribadi/foto/${id}`, {
+          responseType: "arraybuffer",
+        });
 
-      const dataUrl = `data:image/jpeg;base64,${Buffer.from(
-        response?.data,
-        "binary"
-      ).toString("base64")}`;
-      setImageSrc(dataUrl);
+        const dataUrl = `data:image/jpeg;base64,${Buffer.from(
+          response?.data,
+          "binary"
+        ).toString("base64")}`;
+        setImageSrc(dataUrl);
+      } catch (error) {
+        console.log(error.message, "foto profil");
+      }
     };
-    fetchImage();
+    return () => fetchImage();
   }, []);
   if (!imageSrc)
     return (

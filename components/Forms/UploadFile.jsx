@@ -40,7 +40,7 @@ const UploadFile = () => {
           htmlFor={"name"}
           className="uppercase leading-tight font-bold text-sm"
         >
-          Upload File
+          Unggah File
         </label>
         <div
           name="name"
@@ -55,7 +55,7 @@ const UploadFile = () => {
           {file ? (
             <p>{file.name}</p>
           ) : (
-            <p>Drag and drop file here, or click to select file.</p>
+            <p>Seret dan lepas file di sini, atau klik untuk memilih file.</p>
           )}
           <input
             type="file"
@@ -72,7 +72,7 @@ const UploadFile = () => {
               disabled={!file || isSubmitting}
               startIcon={<i className="fi-rr-box" />}
             >
-              {isSubmitting ? "Uploading..." : "Submit"}
+              {isSubmitting ? "Uploading..." : "Kirim"}
             </button> */}
       </div>
     </>

@@ -20,14 +20,26 @@ import { useRouter } from "next/router";
 import { dateFormater } from "@/helper/constant";
 
 const schema = yup.object().shape({
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
-  nama_perguruan_tinggi: yup.string().required("nama organisasi wajib di isi."),
-  nama_program_studi: yup.string().required("nama_program_studi wajib di isi."),
-  gelar_akademik: yup.string().required("mulai keanggotaan wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
+  nama_perguruan_tinggi: yup.string().required("nama organisasi wajib diisi."),
+  nama_program_studi: yup.string().required("nama_program_studi wajib diisi."),
+  gelar_akademik: yup.string().required("mulai keanggotaan wajib diisi."),
   tanggal_selesai_keanggotaan: yup
     .string()
-    .required("selesai keanggotaan wajib di isi."),
-  instansi_profesi: yup.string().required("instansi profesi wajib di isi."),
+    .required("selesai keanggotaan wajib diisi."),
+  instansi_profesi: yup.string().required("instansi profesi wajib diisi."),
 });
 
 const FormCreatePendidikanFormal = ({ initialValues }) => {
@@ -37,6 +49,19 @@ const FormCreatePendidikanFormal = ({ initialValues }) => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           kategori_kegiatan: initialValues?.id_kategori_kegiatan || "",
           nama_perguruan_tinggi: initialValues?.nama_perguruan_tinggi || "",
           nama_program_studi: initialValues?.nama_program_studi || "",
@@ -56,8 +81,18 @@ const FormCreatePendidikanFormal = ({ initialValues }) => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <Input
               label="perguruan tinggi"
               name="nama_perguruan_tinggi"
@@ -170,7 +205,12 @@ const FormCreatePendidikanFormal = ({ initialValues }) => {
               errors={errors.judul_tugas_akhir}
               touched={touched.judul_tugas_akhir}
             />
-            <MultipleUploadFile data={initialValues?.dokumen}>
+            <MultipleUploadFile
+              setFieldValue={setFieldValue}
+              values={values}
+              errors={errors}
+              touched={touched}
+            >
               {router.pathname.includes("edit") && initialValues?.dokumen && (
                 <Table
                   columns={[
@@ -179,10 +219,10 @@ const FormCreatePendidikanFormal = ({ initialValues }) => {
                     { key: "jenis_file", title: "jenis file" },
                     {
                       key: "tanggal_upload",
-                      title: "tanggal_upload",
-                      render: (val) => dateFormater(val.tanggal_upload),
+                      title: "tanggal upload",
+                      dataType: "date",
                     },
-                    { key: "jenis_dokumen", title: "jenis_dokumen" },
+                    { key: "jenis_dokumen", title: "jenis dokumen" },
                     {
                       key: "action",
                       title: "aksi",
@@ -203,7 +243,7 @@ const FormCreatePendidikanFormal = ({ initialValues }) => {
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

@@ -34,7 +34,7 @@ const PengujianMahasiswa = () => {
             penginputan/perbaikan data.
           </h1>
         </div>
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Pengujian Mahasiswa
         </h1>
         <div className="flex flex-col md:flex-row gap-2 justify-between">
@@ -49,7 +49,6 @@ const PengujianMahasiswa = () => {
           <PeriodeSelection onChange={(e) => setSemester(e.target.value)} />
         </div>
         <Table
-          searchAble
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
             { key: "judul", title: "Judul Pengujian" },

@@ -14,11 +14,10 @@ const Dokumen = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Dokumen"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Pembicara
         </h1>
         <Table
-          searchAble
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
             ,

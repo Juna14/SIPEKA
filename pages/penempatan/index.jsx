@@ -1,5 +1,5 @@
 import { Action, MainLayout, Nav, Table } from "@/components";
-import { fetchListPenempatan } from "@/helper/api/api";
+import { fetchListPenempatan } from "@/helper/api/apiSister";
 import { id } from "@/helper/constant";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -17,7 +17,7 @@ const Penempatan = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Penempatan"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Penempatan
         </h1>
 
@@ -33,8 +33,13 @@ const Penempatan = () => {
             {
               key: "tanggal_mulai",
               title: "Terhitung Mulai Tanggal",
+              dataType: "date",
             },
-            { key: "tanggal_keluar", title: "Tanggal Keluar" },
+            {
+              key: "tanggal_keluar",
+              title: "Tanggal Keluar",
+              dataType: "date",
+            },
             {
               key: "id",
               title: "aksi",
@@ -48,7 +53,7 @@ const Penempatan = () => {
               ),
             },
           ]}
-          data={penempatan?.data}
+          data={penempatan}
         />
       </div>
     </MainLayout>

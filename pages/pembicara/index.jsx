@@ -18,11 +18,10 @@ const Pembicara = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"pembicara"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Pembicara
         </h1>
         <Table
-          searchAble
           createLink={"/pembicara/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },

@@ -26,6 +26,7 @@ import React, { useState } from "react";
 const DataPribadi = () => {
   const router = useRouter();
   const [showModal, setShowModal] = useState(false);
+  const [selected, setSelected] = useState(null);
 
   const {
     data: alamat,
@@ -82,7 +83,7 @@ const DataPribadi = () => {
         <Nav title={"Data pribadi"} />
         <div className="grid grid-flow-row xl:grid-flow-col gap-8">
           <CardDataPribadi
-            title={"profile"}
+            title={"profil"}
             editLink={"/edit-biodata"}
             data={[
               {

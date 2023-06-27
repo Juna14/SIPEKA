@@ -13,6 +13,7 @@ import React, { useState } from "react";
 
 const Paten = () => {
   const [showModal, setShowModal] = useState(false);
+  const [selected, setSelected] = useState(null);
   const {
     data: paten,
     error,
@@ -26,6 +27,7 @@ const Paten = () => {
     <MainLayout
       modal={
         <ModalTambahDokumen
+          title={selected}
           showModal={showModal}
           setShowModal={() => setShowModal(!showModal)}
         />
@@ -33,12 +35,11 @@ const Paten = () => {
     >
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"paten"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Paten
         </h1>
 
         <Table
-          searchAble
           createLink={"/paten/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
@@ -67,7 +68,10 @@ const Paten = () => {
                     "edit-bidang-ilmu",
                     "add-document",
                   ]}
-                  addDocumentFn={() => setShowModal(!showModal)}
+                  addDocumentFn={() => {
+                    setShowModal(!showModal);
+                    setSelected(val.judul);
+                  }}
                 />
               ),
             },

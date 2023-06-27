@@ -7,6 +7,18 @@ import React, { useState } from "react";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
   username: yup.string().required(),
   password: yup.string().required(),
   id_pengguna: yup.string().required(),
@@ -37,7 +49,7 @@ const Login = () => {
             setData(res.data);
             localStorage.setItem("role", res.data.role);
             localStorage.setItem("token", res.data.token);
-            router.push("/");
+            router.replace("/");
           })
         }
         validationSchema={schema}
@@ -76,7 +88,7 @@ const Login = () => {
               disabled={!isValid}
               className="disabled:cursor-not-allowed rounded-lg py-2 px-4 bg-primary text-white"
             >
-              {isSubmitting ? "Loading..." : "Submit"}
+              {isSubmitting ? "Memuat..." : "Kirim"}
             </button>
           </Form>
         )}

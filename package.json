@@ -19,6 +19,8 @@
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.8.0",
+    "react-multi-select-component": "^4.3.4",
     "sharp": "^0.32.0",
     "sweetalert2": "^11.7.5",
     "yup": "^1.0.0"

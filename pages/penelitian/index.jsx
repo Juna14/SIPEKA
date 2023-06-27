@@ -13,6 +13,7 @@ import React, { useState } from "react";
 
 const Penelitian = () => {
   const [showModal, setShowModal] = useState(false);
+  const [selected, setSelected] = useState(null);
   const {
     data: penelitian,
     error,
@@ -26,6 +27,7 @@ const Penelitian = () => {
     <MainLayout
       modal={
         <ModalTambahDokumen
+          title={selected}
           showModal={showModal}
           setShowModal={() => setShowModal(!showModal)}
         />
@@ -33,12 +35,11 @@ const Penelitian = () => {
     >
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"penelitian"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Penelitian
         </h1>
         <Table
           key={"penelitian"}
-          searchAble
           createLink={"/penelitian/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
@@ -76,7 +77,10 @@ const Penelitian = () => {
                     "edit-bidang-ilmu",
                     "add-document",
                   ]}
-                  addDocumentFn={() => setShowModal(!showModal)}
+                  addDocumentFn={() => {
+                    setShowModal(!showModal);
+                    setSelected(val.judul);
+                  }}
                 />
               ),
             },

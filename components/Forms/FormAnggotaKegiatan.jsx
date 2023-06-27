@@ -9,7 +9,7 @@ const FormAnggotaKegiatan = ({ name, values, defaultValue }) => {
       render={(arrayHelpers) => (
         <div className="flex flex-col-reverse gap-4">
           <Button
-            text={"Tambah Dosen"}
+            text={"Tambah anggota"}
             icon={<i className="fi-rr-plus" />}
             onClick={() => arrayHelpers.push(defaultValue)}
           />
@@ -56,7 +56,7 @@ const FormAnggotaKegiatan = ({ name, values, defaultValue }) => {
                     onClick={() => arrayHelpers.remove(index)}
                     className="flex items-baseline gap-2 text-red-500"
                   >
-                    <i className="fi-rr-trash"></i> Remove
+                    <i className="fi-rr-trash"></i> Hapus
                   </button>
                 ),
               },

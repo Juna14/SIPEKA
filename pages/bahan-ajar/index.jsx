@@ -24,11 +24,10 @@ const BahanAjar = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 w-full">
         <Nav title={"Bahan Ajar"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Bahan Ajar
         </h1>
         <Table
-          searchAble
           createLink={"/bahan-ajar/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },

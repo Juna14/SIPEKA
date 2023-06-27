@@ -14,7 +14,7 @@ const BimbinganDosen = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 w-full">
         <Nav title={"Bimbingan Dosen"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Data Bimbingan Dosen
         </h1>
         <Table

@@ -25,7 +25,11 @@ const Dropdown = ({ index, isOpen, active, onClick, subItem, title, icon }) => {
         <div className="w-8 h-8 rounded-md flex items-center justify-center group-hover:shadow-xl">
           <i className={icon}></i>
         </div>
-        <span className={`${isNavOpen ? "lg:block" : "lg:hidden"} text-left`}>
+        <span
+          className={`${
+            isNavOpen ? "lg:block" : "lg:hidden"
+          } text-left capitalize`}
+        >
           {title}
         </span>
 

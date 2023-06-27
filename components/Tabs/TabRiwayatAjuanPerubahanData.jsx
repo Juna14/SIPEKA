@@ -8,7 +8,6 @@ const TabRiwayatAjuanPerubahanData = ({ title }) => {
       tabs={["Draft", "Diajukan", "Disetujui", "Ditolak", "Ditangguhkan"]}
       contents={[
         <Table
-          searchAble={true}
           key={1}
           columns={[
             {
@@ -27,7 +26,6 @@ const TabRiwayatAjuanPerubahanData = ({ title }) => {
           ]}
         />,
         <Table
-          searchAble={true}
           key={2}
           columns={[
             {
@@ -47,7 +45,6 @@ const TabRiwayatAjuanPerubahanData = ({ title }) => {
           ]}
         />,
         <Table
-          searchAble={true}
           key={3}
           columns={[
             {
@@ -72,7 +69,6 @@ const TabRiwayatAjuanPerubahanData = ({ title }) => {
           ]}
         />,
         <Table
-          searchAble={true}
           key={4}
           columns={[
             {
@@ -97,7 +93,6 @@ const TabRiwayatAjuanPerubahanData = ({ title }) => {
           ]}
         />,
         <Table
-          searchAble={true}
           key={5}
           columns={[
             {

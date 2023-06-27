@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
   return (
     <ul className="flex gap-2 items-center text-xs">
       <li>
-        <Link href="/">Home</Link>
+        <Link href="/">Beranda</Link>
       </li>
       {path?.map((part, index) => {
         const url = `/${path.slice(0, index + 1).join("/")}`;

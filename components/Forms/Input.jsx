@@ -16,12 +16,12 @@ const Input = ({ name, label, type, value, placeholder, errors, touched }) => {
         value={value}
         placeholder={placeholder}
         className={`py-2 px-4 rounded-lg shadow-lg outline-none border-2 appearance-none dark:bg-slate-800 ${
-          errors
+          errors && touched
             ? `focus:border-red-500 border-red-500 caret-red-500 `
             : `focus:border-primary border-primary caret-primary `
         }`}
       />
-      {errors ? (
+      {errors && touched ? (
         <div className="text-red-500 font-semibold capitalize">{errors}</div>
       ) : null}
     </div>

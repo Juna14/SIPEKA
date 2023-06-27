@@ -6,12 +6,11 @@ const ListDataPengujianMahasiswa = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 w-full">
         <Nav title={"Pengujian Mahasiswa"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Daftar Pengujian Mahasiswa yang di Import
         </h1>
 
         <Table
-          searchAble
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
             { key: "judul", title: "Judul Pengujian" },

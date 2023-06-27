@@ -1,52 +1,71 @@
+import { MainLayout, Nav, Button, Selector } from "@/components";
 import {
-  KelompokBidangSelection,
-  FormCreatePenngabdian,
-  MainLayout,
-  Nav,
-  Button,
-} from "@/components";
-import { fetchDetailPengabdian } from "@/helper/api/apiSister";
+  fetchDetailPengabdian,
+  fetchKelompokBidang,
+} from "@/helper/api/apiSister";
+import { Form, Formik } from "formik";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-const PenngabdianEditBidangIlmu = () => {
+const PengabdianEditBidangIlmu = () => {
   const router = useRouter();
   const { id } = router.query;
   useEffect(() => {}, [router.isReady]);
 
-  const {
-    data: pengabdian,
-    isError,
-    isLoading,
-  } = useQuery({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["pengabdian", id],
     queryFn: async () => await fetchDetailPengabdian(id),
     networkMode: "offlineFirst",
   });
-  {
-    isLoading && <p>Loading...</p>;
-  }
-  {
-    isError && <p>Error fetching data</p>;
-  }
+
   return (
     <MainLayout>
       <div className="flex flex-col gap-8">
-        <Nav title={"Edit Penngabdian"} />
+        <Nav title={"Ubah Pengabdian"} />
         <div className="flex flex-col gap-4 dark:text-white w-full h-full">
-          <h1 className="text-md font-bold uppercase">Form Edit Penngabdian</h1>
+          <h1 className="text-md font-bold capitalize">
+            Formulir Ubah Pengabdian
+          </h1>
           <div className="grid grid-flow-row gap-4 bg-white dark:bg-slate-800 px-4 py-8 rounded-xl ">
             <h1 className="text-lg font-bold text-slate-600 dark:text-slate-500">
-              {pengabdian?.judul}
+              {isLoading ? "Memuat..." : data?.judul}
             </h1>
             <div className="flex gap-8">
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 basis-1/4">
                 <span className="font-bold uppercase text-sm">urutan</span>
               </div>
-              <KelompokBidangSelection />
-              <div className="flex flex-col gap-2">
-                <span className="font-bold uppercase text-sm">Action</span>
+              <Formik
+                initialValues={{
+                  id_bidang_ilmu: data?.bidang_ilmu?.id || "",
+                  bidang_ilmu: data?.bidang_ilmu?.nama || "",
+                }}
+                onSubmit={() => null}
+              >
+                {({ values, errors, touched, setFieldValue }) => (
+                  <Form className="basis-2/4">
+                    <Selector
+                      label="Bidang Ilmu"
+                      name="bidang_ilmu"
+                      placeholder={"Pilih Bidang Ilmu"}
+                      values={{
+                        id: data?.id_bidang_ilmu,
+                        nama: data?.bidang_ilmu,
+                      }}
+                      onChange={setFieldValue}
+                      queryKey={"bahan_ajar"}
+                      queryFn={() => fetchKelompokBidang(true)}
+                      valueKey="id"
+                      labelKey="nama"
+                      errors={errors.bidang_ilmu}
+                      touched={touched.bidang_ilmu}
+                    />
+                  </Form>
+                )}
+              </Formik>
+
+              <div className="flex flex-col gap-2 basis-1/4">
+                <span className="font-bold uppercase text-sm">Aksi</span>
                 <Button text={"Simpan"} size={"small"} />
               </div>
             </div>
@@ -57,4 +76,4 @@ const PenngabdianEditBidangIlmu = () => {
   );
 };
 
-export default PenngabdianEditBidangIlmu;
+export default PengabdianEditBidangIlmu;

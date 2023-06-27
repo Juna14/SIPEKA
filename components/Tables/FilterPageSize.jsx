@@ -3,11 +3,11 @@ import React from "react";
 const FilterPageSize = ({ onChange }) => {
   return (
     <div className="flex items-center gap-2 text-sm">
-      <label htmlFor="pageSize">Show</label>
+      <label htmlFor="pageSize">Tampilan</label>
       <select
         name="pageSize"
         id="pageSize"
-        className="bg-white dark:bg-slate-700 border border-primary rounded-lg py-2 px-4 font-semibold"
+        className="bg-white dark:bg-slate-700 border border-primary rounded-lg py-2 px-4 font-semibold w-full"
         onChange={onChange}
         defaultValue={"5"}
       >
@@ -17,7 +17,7 @@ const FilterPageSize = ({ onChange }) => {
         <option value="50">50</option>
         <option value="100">100</option>
       </select>
-      <span>entries</span>
+      <span>entri</span>
     </div>
   );
 };

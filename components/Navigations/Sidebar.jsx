@@ -114,7 +114,7 @@ const Sidebar = () => {
             "/penempatan/[id]",
             "/penempatan/[id]/edit",
           ].includes(router.pathname)}
-          title="Profile"
+          title="profil"
           href="/"
           icon={"fi-rr-user"}
           subItem={[
@@ -492,7 +492,7 @@ const Sidebar = () => {
               className="flex gap-2 justify-center items-center"
             >
               <i className="fi-rr-sign-in-alt mt-1"></i>
-              Login
+              Masuk
             </Link>
           ) : (
             <button
@@ -504,7 +504,7 @@ const Sidebar = () => {
               className="flex gap-2 justify-center items-center"
             >
               <i className="fi-rr-sign-out-alt mt-1"></i>
-              {isNavOpen && <span>Logout</span>}
+              {isNavOpen && <span>Keluar</span>}
             </button>
           )}
           <button
@@ -512,7 +512,7 @@ const Sidebar = () => {
             onClick={() => toggleDarkMode()}
           >
             <i className={`mt-1 ${darkMode ? "fi-rr-moon" : "fi-rr-sun"}`}></i>
-            {isNavOpen && <span>{darkMode ? "Dark" : "Light"}</span>}
+            {isNavOpen && <span>{darkMode ? "Gelap" : "Terang"}</span>}
           </button>
         </div>
       </aside>

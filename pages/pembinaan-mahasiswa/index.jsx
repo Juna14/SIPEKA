@@ -15,13 +15,14 @@ const PembinaanMahasiswa = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 w-full">
         <Nav title={"Pembinaan Mahasiswa"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Pembinaan Mahasiswa
         </h1>
         <div className="flex flex-col md:flex-row gap-2 justify-between">
           <PeriodeSelection />
         </div>
         <Table
+          // createLink={"/pembinaan-mahasiswa/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
             { key: "semester", title: "Semester" },

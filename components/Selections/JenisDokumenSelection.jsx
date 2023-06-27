@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { Select } from "..";
 
-const JenisDokumenSelection = ({ value, errors, touched }) => {
+const JenisDokumenSelection = ({ name, value, errors, touched }) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["jenis-dokumen"],
     queryFn: async () => await fetchJenisDokumen(),
@@ -13,12 +13,12 @@ const JenisDokumenSelection = ({ value, errors, touched }) => {
     <>
       <Select
         label={`jenis dokumen`}
-        name="jenis_dokumen"
+        name={name}
         option={data}
         errors={errors}
         touched={touched}
         values={value}
-        valueKey={"nama"}
+        valueKey={"id"}
         labelKey={"nama"}
       />
     </>

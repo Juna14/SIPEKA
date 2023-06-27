@@ -7,12 +7,24 @@ import { useQuery } from "@tanstack/react-query";
 import { id } from "@/helper/constant";
 
 const schema = yup.object().shape({
-  nip: yup.string().required("nip wajib di isi."),
-  sumbergaji: yup.string().required("sumbergaji wajib di isi."),
-  sk_cpns: yup.string().required("sk cpns wajib di isi."),
-  tanggal_sk_cpns: yup.string().required("tanggal sk cpns wajib di isi."),
-  sk_tmmd: yup.string().required("sk tmmd wajib di isi."),
-  tmmd: yup.string().required("tmmd wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  nip: yup.string().required("nip wajib diisi."),
+  sumbergaji: yup.string().required("sumbergaji wajib diisi."),
+  sk_cpns: yup.string().required("sk cpns wajib diisi."),
+  tanggal_sk_cpns: yup.string().required("tanggal sk cpns wajib diisi."),
+  sk_tmmd: yup.string().required("sk tmmd wajib diisi."),
+  tmmd: yup.string().required("tmmd wajib diisi."),
 });
 
 const FormEditKepegawaian = () => {
@@ -27,6 +39,19 @@ const FormEditKepegawaian = () => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           nip: kepegawaian?.data[0]?.pegawai.nip,
           sumbergaji: kepegawaian?.data[0]?.sumbergaji.nama,
           sk_cpns: kepegawaian?.data[0]?.sk_cpns,
@@ -37,8 +62,18 @@ const FormEditKepegawaian = () => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <Input
               label="nip"
               name="nip"
@@ -93,11 +128,16 @@ const FormEditKepegawaian = () => {
               errors={errors.sumbergaji}
               touched={touched.sumbergaji}
             />
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

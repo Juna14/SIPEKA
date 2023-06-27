@@ -7,7 +7,7 @@ const SearchButton = ({ onChange, value }) => {
       onChange={onChange}
       value={value}
       className="py-1 px-4 rounded-lg ring ring-primary shadow-lg appearance-none outline-none caret-primary dark:bg-slate-700 placeholder:font-bold"
-      placeholder="Search here ..."
+      placeholder="Cari di sini ..."
     />
   );
 };

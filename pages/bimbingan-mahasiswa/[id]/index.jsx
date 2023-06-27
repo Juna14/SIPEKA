@@ -21,7 +21,7 @@ const DetailBimbinganMahasiswa = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Detail Bimbingan Mahasiswa"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Detail Bimbingan Mahasiswa
         </h1>
         <div className="flex flex-col gap-2 justify-center bg-white dark:bg-slate-800 rounded-xl p-4 divide-y dark:divide-slate-500">
@@ -92,7 +92,6 @@ const DetailBimbinganMahasiswa = () => {
             Dosen Pembimbing
           </h1>
           <Table
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -108,7 +107,6 @@ const DetailBimbinganMahasiswa = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               {
@@ -136,7 +134,6 @@ const DetailBimbinganMahasiswa = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble={true}
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },

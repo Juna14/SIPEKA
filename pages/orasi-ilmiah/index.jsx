@@ -13,7 +13,7 @@ const OrasiIlmiah = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 w-full">
         <Nav title={"Orasi Ilmiah"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Orasi Ilmiah
         </h1>
         <Table

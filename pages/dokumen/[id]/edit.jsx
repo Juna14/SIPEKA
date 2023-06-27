@@ -20,30 +20,65 @@ const DokumenEdit = () => {
   });
   return (
     <MainLayout>
-      <Nav title={"Edit Dokumen"} />
+      <Nav title={"Ubah Dokumen"} />
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
-        <h1 className="text-md font-bold uppercase">Form Edit Dokumen</h1>
+        <h1 className="text-md font-bold capitalize">Formulir Ubah Dokumen</h1>
         <div className="flex flex-col gap-4 bg-white dark:bg-slate-800 px-4 py-8 rounded-xl ">
           {isLoading ? (
-            "Loading...!"
+            "Memuat...!"
           ) : (
             <Formik
               enableReinitialize
               initialValues={{
-                nama: dokumen?.nama || "",
-                tautan: dokumen?.tautan || "",
-                keterangan: dokumen?.keterangan || "",
-                id_jenis_dokumen: dokumen?.id_jenis_dokumen || "",
-                file: dokumen?.file || "",
+                // dokumen: [
+                //   {
+                //     id: dokumen.id || "",
+                //     id_jenis_dokumen: dokumen.id_jenis_dokumen || "",
+                //     nama: dokumen.nama || "",
+                //     keterangan: dokumen.keterangan || "",
+                //     tanggal_upload: dokumen.tanggal_upload || "",
+                //     tautan: dokumen.tautan || "",
+                //     jenis_file: dokumen.jenis_file || "",
+                //     nama_file: dokumen.nama_file || "",
+                //     jenis_dokumen: dokumen.jenis_dokumen || "",
+                //   },
+                // ],
+                // nama: dokumen?.nama || "",
+                // tautan: dokumen?.tautan || "",
+                // keterangan: dokumen?.keterangan || "",
+                // id_jenis_dokumen: dokumen?.id_jenis_dokumen || "",
+                // file: dokumen?.file || "",
+                dokumen: [
+                  {
+                    id: dokumen?.id || "",
+                    id_jenis_dokumen: dokumen?.id_jenis_dokumen || "",
+                    nama: dokumen?.nama || "",
+                    keterangan: dokumen?.keterangan || "",
+                    tanggal_upload: dokumen?.tanggal_upload || "",
+                    tautan: dokumen?.tautan || "",
+                    jenis_file: dokumen?.jenis_file || "",
+                    nama_file: dokumen?.nama_file || "",
+                    jenis_dokumen: dokumen?.jenis_dokumen || "",
+                  },
+                ],
               }}
               onSubmit={() => null}
             >
-              {({ isSubmitting }) => (
-                <Form className="flex flex-col gap-4">
-                  <MultipleUploadFile limit={1} data={dokumen} />
+              {({ values, errors, touched, isSubmitting, setFieldValue }) => (
+                <Form
+                  className="flex flex-col gap-4"
+                  onClick={(e) => e.preventDefault}
+                >
+                  <MultipleUploadFile
+                    limit={1}
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    setFieldValue={setFieldValue}
+                  />
                   <Button
                     type={"submit"}
-                    text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+                    text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
                   />
                 </Form>
               )}

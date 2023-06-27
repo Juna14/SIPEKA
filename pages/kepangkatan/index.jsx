@@ -1,5 +1,5 @@
 import { Action, Button, MainLayout, Nav, Table } from "@/components";
-import { fetchListKepangkatan } from "@/helper/api/api";
+import { fetchListKepangkatan } from "@/helper/api/apiSister";
 import { id } from "@/helper/constant";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
@@ -21,7 +21,7 @@ const Kepangkatan = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Kepangkatan"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Riwayat Golongan/Pangkat
         </h1>
         <div className="flex flex-col md:flex-row gap-2 justify-between">
@@ -59,7 +59,7 @@ const Kepangkatan = () => {
               ),
             },
           ]}
-          data={Kepangkatan?.data}
+          data={Kepangkatan}
         />
       </div>
     </MainLayout>

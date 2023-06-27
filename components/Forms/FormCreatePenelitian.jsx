@@ -3,6 +3,7 @@ import { Formik, Form } from "formik";
 import {
   Action,
   Button,
+  FormAnggotaPengabdian,
   Input,
   JabatanFungsionalSelection,
   KategoriKegiatanSelection,
@@ -15,34 +16,44 @@ import { createUser } from "@/helper/api/api";
 import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
-  judul: yup.string().required("judul wajib di isi."),
-  afiliasi: yup.string().required("afiliasi wajib di isi."),
-  kelompok_bidang: yup.string().required("kelompok bidang wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
+  judul: yup.string().required("judul wajib diisi."),
+  afiliasi: yup.string().required("afiliasi wajib diisi."),
+  kelompok_bidang: yup.string().required("kelompok bidang wajib diisi."),
   litabmas_sebelumnya: yup
     .string()
-    .required("litabmas sebelumnya wajib di isi."),
-  jenis_skim: yup.string().required("jenis skim wajib di isi."),
-  lokasi: yup.string().required("lokasi kegiatan wajib di isi."),
-  tahun_usulan: yup.string().required("tahun usulan wajib di isi."),
-  tahun_kegiatan: yup.string().required("tahun kegiatan wajib di isi."),
-  lama_kegiatan: yup.string().required("lama kegiatan wajib di isi."),
-  tahun_pelaksanaan_ke: yup
-    .string()
-    .required("tahun pelaksanaan wajib di isi."),
-  dana_dikti: yup.string().required("dana dikti wajib di isi."),
+    .required("litabmas sebelumnya wajib diisi."),
+  jenis_skim: yup.string().required("jenis skim wajib diisi."),
+  lokasi: yup.string().required("lokasi kegiatan wajib diisi."),
+  tahun_usulan: yup.string().required("tahun usulan wajib diisi."),
+  tahun_kegiatan: yup.string().required("tahun kegiatan wajib diisi."),
+  lama_kegiatan: yup.string().required("lama kegiatan wajib diisi."),
+  tahun_pelaksanaan_ke: yup.string().required("tahun pelaksanaan wajib diisi."),
+  dana_dikti: yup.string().required("dana dikti wajib diisi."),
   dana_perguruan_tinggi: yup
     .string()
-    .required("dana perguruan tinggi wajib di isi."),
+    .required("dana perguruan tinggi wajib diisi."),
   dana_institusi_lain: yup
     .string()
-    .required("dana institusi lain wajib di isi."),
-  in_kind: yup.string().required("in kind wajib di isi."),
-  sk_penugasan: yup.string().required("sk penugasan wajib di isi."),
+    .required("dana institusi lain wajib diisi."),
+  in_kind: yup.string().required("in kind wajib diisi."),
+  sk_penugasan: yup.string().required("sk penugasan wajib diisi."),
   tanggal_sk_penugasan: yup
     .string()
-    .required("tanggal sk penugasan wajib di isi."),
-  mitra_litabmas: yup.string().required("mitra litabmas wajib di isi."),
+    .required("tanggal sk penugasan wajib diisi."),
+  mitra_litabmas: yup.string().required("mitra litabmas wajib diisi."),
 });
 
 const FormCreatePenelitian = ({ initialValues }) => {
@@ -53,6 +64,19 @@ const FormCreatePenelitian = ({ initialValues }) => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: initialValues?.dokumen || [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           kategori_kegiatan: initialValues?.id_kategori_kegiatan || "",
           judul: initialValues?.judul || "",
           afiliasi: initialValues?.afiliasi || "",
@@ -74,13 +98,64 @@ const FormCreatePenelitian = ({ initialValues }) => {
           sk_penugasan: initialValues?.sk_penugasan || "",
           tanggal_sk_penugasan: initialValues?.tanggal_sk_penugasan || "",
           mitra_litabmas: initialValues?.mitra_litabmas[0]?.nama || "",
-          dokumen: initialValues?.dokumen || "",
+          anggota_dosen: initialValues?.anggota.filter(
+            (item) => item.jenis === "Dosen"
+          ) || [
+            {
+              nama: "",
+              jenis: "",
+              id_sdm: "",
+              id_peserta_didik: "",
+              nomor_induk_peserta_didik: "",
+              id_orang: "",
+              aktif: "",
+              peran: "",
+            },
+          ],
+          anggota_mahasiswa: initialValues?.anggota.filter(
+            (item) => item.jenis === "Mahasiswa"
+          ) || [
+            {
+              nama: "",
+              jenis: "",
+              id_sdm: "",
+              id_peserta_didik: "",
+              nomor_induk_peserta_didik: "",
+              id_orang: "",
+              aktif: "",
+              peran: "",
+            },
+          ],
+          anggota_lain: initialValues?.anggota.filter(
+            (item) => item.jenis === "Lain"
+          ) || [
+            {
+              nama: "",
+              jenis: "",
+              id_sdm: "",
+              id_peserta_didik: "",
+              nomor_induk_peserta_didik: "",
+              id_orang: "",
+              aktif: "",
+              peran: "",
+            },
+          ],
         }}
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <KategoriKegiatanSelection
               type={"tree"}
               menu={"penelitian"}
@@ -233,7 +308,12 @@ const FormCreatePenelitian = ({ initialValues }) => {
               errors={errors.mitra_litabmas}
               touched={touched.mitra_litabmas}
             />
-            <MultipleUploadFile data={initialValues?.dokumen}>
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            >
               {router.pathname.includes("edit") && initialValues?.dokumen && (
                 <Table
                   columns={[
@@ -262,10 +342,61 @@ const FormCreatePenelitian = ({ initialValues }) => {
                 />
               )}
             </MultipleUploadFile>
+            <span className="uppercase leading-tight font-bold text-sm">
+              Anggota Kegiatan (Dosen)
+            </span>
+            <FormAnggotaPengabdian
+              name={"anggota_dosen"}
+              values={values.anggota_dosen}
+              defaultValue={{
+                nama: "",
+                jenis: "",
+                id_sdm: "",
+                id_peserta_didik: "",
+                nomor_induk_peserta_didik: "",
+                id_orang: "",
+                aktif: "",
+                peran: "",
+              }}
+            />
+            <span className="uppercase leading-tight font-bold text-sm">
+              Anggota Kegiatan (Mahasiswa)
+            </span>
+            <FormAnggotaPengabdian
+              name={"anggota_mahasiswa"}
+              values={values.anggota_mahasiswa}
+              defaultValue={{
+                nama: "",
+                jenis: "",
+                id_sdm: "",
+                id_peserta_didik: "",
+                nomor_induk_peserta_didik: "",
+                id_orang: "",
+                aktif: "",
+                peran: "",
+              }}
+            />
+            <span className="uppercase leading-tight font-bold text-sm">
+              Anggota Kegiatan (Kolaborator Eksternal)
+            </span>
+            <FormAnggotaPengabdian
+              name={"anggota_lain"}
+              values={values?.anggota_lain}
+              defaultValue={{
+                nama: "",
+                jenis: "",
+                id_sdm: "",
+                id_peserta_didik: "",
+                nomor_induk_peserta_didik: "",
+                id_orang: "",
+                aktif: "",
+                peran: "",
+              }}
+            />
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

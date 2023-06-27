@@ -89,7 +89,6 @@ const DetailPengujianMahasiswa = () => {
             Dosen Pembimbing
           </h1>
           <Table
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -105,7 +104,6 @@ const DetailPengujianMahasiswa = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -121,7 +119,6 @@ const DetailPengujianMahasiswa = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble={true}
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -157,7 +154,7 @@ const DetailPengujianMahasiswa = () => {
             data={pengujian_mahasiswa?.dokumen}
           />
         </div>
-        <div className="flex justify-between items-center">
+        {/* <div className="flex justify-between items-center">
           <Link
             href={`/pengujian_mahasiswa/${id}/edit`}
             className="bg-primary rounded-xl py-2 px-4 text-white text-sm"
@@ -170,7 +167,7 @@ const DetailPengujianMahasiswa = () => {
           >
             <i className="fi-rr-pencil"></i> Laporkan Kesalahan
           </Link>
-        </div>
+        </div> */}
       </div>
     </MainLayout>
   );

@@ -16,24 +16,36 @@ import { createUser } from "@/helper/api/api";
 import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
   kategori_capaian_luaran: yup
     .string()
-    .required("kategori_capaian_luaran kegiatan wajib di isi."),
-  litabmas: yup.string().required("litabmas kegiatan wajib di isi."),
+    .required("kategori_capaian_luaran kegiatan wajib diisi."),
+  litabmas: yup.string().required("litabmas kegiatan wajib diisi."),
   kategori_pembicara: yup
     .string()
-    .required("kategori_pembicara kegiatan wajib di isi."),
-  nama_pertemuan: yup.string().required("nama_pertemuan wajib di isi."),
-  penyelenggara: yup.string().required("penyelenggara wajib di isi."),
+    .required("kategori_pembicara kegiatan wajib diisi."),
+  nama_pertemuan: yup.string().required("nama_pertemuan wajib diisi."),
+  penyelenggara: yup.string().required("penyelenggara wajib diisi."),
   tanggal_pelaksanaan: yup
     .string()
-    .required("tanggal_pelaksanaan wajib di isi."),
-  bahasa: yup.string().required("bahasa sebelumnya wajib di isi."),
-  sk_penugasan: yup.string().required("sk_penugasan bidang wajib di isi."),
+    .required("tanggal_pelaksanaan wajib diisi."),
+  bahasa: yup.string().required("bahasa sebelumnya wajib diisi."),
+  sk_penugasan: yup.string().required("sk_penugasan bidang wajib diisi."),
   tanggal_sk_penugasan: yup
     .string()
-    .required("tanggal_sk_penugasan bidang wajib di isi."),
+    .required("tanggal_sk_penugasan bidang wajib diisi."),
 });
 
 const FormCreatePembicara = ({ initialValues }) => {
@@ -44,6 +56,19 @@ const FormCreatePembicara = ({ initialValues }) => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           kategori_kegiatan: initialValues?.id_kategori_kegiatan || "",
           kategori_capaian_luaran:
             initialValues?.id_kategori_capaian_luaran || "",
@@ -59,8 +84,18 @@ const FormCreatePembicara = ({ initialValues }) => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <KategoriKegiatanSelection
               type={"tree"}
               menu={"pembicara"}
@@ -82,16 +117,26 @@ const FormCreatePembicara = ({ initialValues }) => {
               errors={errors.litabmas}
               touched={touched.litabmas}
             />
-            <Input
-              label="kategori_pembicara"
+            <Select
+              label="kategori pembicara"
               name="kategori_pembicara"
-              type="text"
+              option={[
+                { value: "1", label: "Pembicara pada pertemuan ilmiah" },
+                { value: "2", label: "Pembicara kunci" },
+                {
+                  value: "3",
+                  label:
+                    "Pembicara/Narasumber pada pelatihan/penyuluhan/cearamah",
+                },
+              ]}
+              labelKey={"label"}
+              valueKey={"value"}
               value={initialValues?.kategori_pembicara}
               errors={errors.kategori_pembicara}
               touched={touched.kategori_pembicara}
             />
             <Input
-              label="nama_pertemuan"
+              label="nama pertemuan"
               name="nama_pertemuan"
               type="text"
               value={initialValues?.nama_pertemuan}
@@ -99,7 +144,7 @@ const FormCreatePembicara = ({ initialValues }) => {
               touched={touched.nama_pertemuan}
             />
             <Input
-              label="tingkat_pertemuan"
+              label="tingkat pertemuan"
               name="tingkat_pertemuan"
               type="text"
               value={initialValues?.tingkat_pertemuan}
@@ -147,7 +192,12 @@ const FormCreatePembicara = ({ initialValues }) => {
               errors={errors.tanggal_sk_penugasan}
               touched={touched.tanggal_sk_penugasan}
             />
-            <MultipleUploadFile data={initialValues?.dokumen}>
+            <MultipleUploadFile
+              setFieldValue={setFieldValue}
+              values={values}
+              errors={errors}
+              touched={touched}
+            >
               {router.pathname.includes("edit") && initialValues?.dokumen && (
                 <Table
                   columns={[
@@ -156,10 +206,10 @@ const FormCreatePembicara = ({ initialValues }) => {
                     { key: "jenis_file", title: "jenis file" },
                     {
                       key: "tanggal_upload",
-                      title: "tanggal_upload",
-                      render: (val) => dateFormater(val.tanggal_upload),
+                      title: "tanggal upload",
+                      dataType: "date",
                     },
-                    { key: "jenis_dokumen", title: "jenis_dokumen" },
+                    { key: "jenis_dokumen", title: "jenis dokumen" },
                     {
                       key: "action",
                       title: "aksi",
@@ -180,7 +230,7 @@ const FormCreatePembicara = ({ initialValues }) => {
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

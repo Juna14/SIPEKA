@@ -6,12 +6,7 @@ import {
   Input,
   KategoriKegiatanSelection,
   MultipleUploadFile,
-  NestedList,
-  PerguruanTinggiSelection,
-  Select,
-  StackedTab,
   Table,
-  Textarea,
 } from "..";
 import * as yup from "yup";
 import { createUser, fetchListInpassing } from "@/helper/api/api";
@@ -20,16 +15,28 @@ import { useRouter } from "next/router";
 import { dateFormater } from "@/helper/constant";
 
 const schema = yup.object().shape({
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
-  nama_organisasi: yup.string().required("nama organisasi wajib di isi."),
-  peran: yup.string().required("peran wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
+  nama_organisasi: yup.string().required("nama organisasi wajib diisi."),
+  peran: yup.string().required("peran wajib diisi."),
   tanggal_mulai_keanggotaan: yup
     .string()
-    .required("mulai keanggotaan wajib di isi."),
+    .required("mulai keanggotaan wajib diisi."),
   tanggal_selesai_keanggotaan: yup
     .string()
-    .required("selesai keanggotaan wajib di isi."),
-  instansi_profesi: yup.string().required("instansi profesi wajib di isi."),
+    .required("selesai keanggotaan wajib diisi."),
+  instansi_profesi: yup.string().required("instansi profesi wajib diisi."),
 });
 
 const FormCreateAnggotaProfesi = ({ initialValues }) => {
@@ -39,6 +46,19 @@ const FormCreateAnggotaProfesi = ({ initialValues }) => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           kategori_kegiatan: initialValues?.id_kategori_kegiatan || "",
           nama_organisasi: initialValues?.nama_organisasi || "",
           peran: initialValues?.peran || "",
@@ -51,8 +71,18 @@ const FormCreateAnggotaProfesi = ({ initialValues }) => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <KategoriKegiatanSelection
               type={"tree"}
               menu={"anggota_profesi"}
@@ -100,7 +130,12 @@ const FormCreateAnggotaProfesi = ({ initialValues }) => {
               errors={errors.instansi_profesi}
               touched={touched.instansi_profesi}
             />
-            <MultipleUploadFile data={initialValues?.dokumen}>
+            <MultipleUploadFile
+              setFieldValue={setFieldValue}
+              values={values}
+              errors={errors}
+              touched={touched}
+            >
               {router.pathname.includes("edit") && initialValues?.dokumen && (
                 <Table
                   columns={[
@@ -109,10 +144,10 @@ const FormCreateAnggotaProfesi = ({ initialValues }) => {
                     { key: "jenis_file", title: "jenis file" },
                     {
                       key: "tanggal_upload",
-                      title: "tanggal_upload",
-                      render: (val) => dateFormater(val.tanggal_upload),
+                      title: "tanggal upload",
+                      dataType: "date",
                     },
-                    { key: "jenis_dokumen", title: "jenis_dokumen" },
+                    { key: "jenis_dokumen", title: "jenis dokumen" },
                     {
                       key: "action",
                       title: "aksi",
@@ -133,7 +168,7 @@ const FormCreateAnggotaProfesi = ({ initialValues }) => {
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
+import Swal from "sweetalert2";
 
 const DetailPenelitian = () => {
   const router = useRouter();
@@ -20,7 +21,7 @@ const DetailPenelitian = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Detail Penelitian"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Detail Penelitian
         </h1>
         <div className="flex flex-col gap-2 justify-center bg-white dark:bg-slate-800 rounded-xl p-4 divide-y dark:divide-slate-500">
@@ -128,7 +129,6 @@ const DetailPenelitian = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -148,7 +148,6 @@ const DetailPenelitian = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -169,7 +168,6 @@ const DetailPenelitian = () => {
             Anggota Non Civitas Akademika
           </h1>
           <Table
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -189,7 +187,6 @@ const DetailPenelitian = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble={true}
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -232,12 +229,19 @@ const DetailPenelitian = () => {
           >
             <i className="fi-rr-pencil"></i> Ubah Data
           </Link>
-          <Link
-            href={`/penelitian/${id}/edit`}
+          <button
+            onClick={() =>
+              Swal.fire({
+                title:
+                  "Maaf, Anda tidak mempunyai akses untuk membuka halaman tersebut",
+                icon: "warning",
+                confirmButtonText: "Tutup",
+              })
+            }
             className="bg-primary rounded-xl py-2 px-4 text-white text-sm"
           >
             <i className="fi-rr-pencil"></i> Laporkan Kesalahan
-          </Link>
+          </button>
         </div>
       </div>
     </MainLayout>

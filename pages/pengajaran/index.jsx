@@ -39,7 +39,7 @@ const Pengajaran = () => {
             matakuliah <b>selain Tugas akhir/Skripsi/Thesis/Disertasi</b>
           </p>
         </div>
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Pengajaran
         </h1>
         <div className="flex flex-col md:flex-row gap-2 justify-between">
@@ -49,16 +49,10 @@ const Pengajaran = () => {
             text="Import Pengajaran"
             onClick={() => router.push("/pengajaran/list-data")}
           />
-          <PeriodeSelection
-            withPendek={false}
-            onChange={(e) => {
-              setSemester(e.target.value);
-            }}
-          />
+          <PeriodeSelection withPendek={false} onChange={setSemester} />
         </div>
 
         <Table
-          searchAble
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },
             { key: "mata_kuliah", title: "Mata Kuliah" },

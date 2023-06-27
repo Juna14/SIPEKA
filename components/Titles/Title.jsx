@@ -29,7 +29,7 @@ const Title = () => {
 
   return (
     <Head>
-      <title>SIPEKA | {title ? title : ""}</title>
+      <title>{title ? `SIPEKA | ${title}` : "SIPEKA"}</title>
     </Head>
   );
 };

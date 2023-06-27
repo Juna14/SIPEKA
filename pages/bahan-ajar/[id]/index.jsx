@@ -77,7 +77,6 @@ const DetailBahanAjar = () => {
             Penulis Dosen
           </h1>
           <Table
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -94,7 +93,6 @@ const DetailBahanAjar = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -114,7 +112,6 @@ const DetailBahanAjar = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble={true}
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -156,17 +153,17 @@ const DetailBahanAjar = () => {
         </div>
         <div className="flex justify-between items-center">
           <Link
-            href={`/bahan_ajar/${id}/edit`}
+            href={`/bahan-ajar/${id}/edit`}
             className="bg-primary rounded-xl py-2 px-4 text-white text-sm"
           >
             <i className="fi-rr-pencil"></i> Ubah Data
           </Link>
-          <Link
+          {/* <Link
             href={`/bahan_ajar/${id}/edit`}
             className="bg-primary rounded-xl py-2 px-4 text-white text-sm"
           >
             <i className="fi-rr-pencil"></i> Laporkan Kesalahan
-          </Link>
+          </Link> */}
         </div>
       </div>
     </MainLayout>

@@ -7,11 +7,23 @@ import { useQuery } from "@tanstack/react-query";
 import { id } from "@/helper/constant";
 
 const schema = yup.object().shape({
-  nama: yup.string().required("Nama wajib di isi dan tanpa gelar."),
-  jenis_kelamin: yup.string().required("Jenis kelamin wajib di isi."),
-  tempat_lahir: yup.string().required("Tempat lahir wajib di isi."),
-  tanggal_lahir: yup.date().required("Tanggal lahir wajib di isi."),
-  nama_ibu_kandung: yup.string().required("Nama ibu kandung wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  nama: yup.string().required("Nama wajib diisi dan tanpa gelar."),
+  jenis_kelamin: yup.string().required("Jenis kelamin wajib diisi."),
+  tempat_lahir: yup.string().required("Tempat lahir wajib diisi."),
+  tanggal_lahir: yup.date().required("Tanggal lahir wajib diisi."),
+  nama_ibu_kandung: yup.string().required("Nama ibu kandung wajib diisi."),
 });
 
 const FormEditBiodata = () => {
@@ -26,6 +38,19 @@ const FormEditBiodata = () => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           nama: profil?.data[0]?.pegawai.nama_sdm,
           jenis_kelamin: profil?.data[0]?.jenis_kelamin,
           tempat_lahir: profil?.data[0]?.tempat_lahir,
@@ -35,8 +60,18 @@ const FormEditBiodata = () => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <Input
               label="nama"
               name="nama"
@@ -83,11 +118,16 @@ const FormEditBiodata = () => {
               errors={errors.nama_ibu_kandung}
               touched={touched.nama_ibu_kandung}
             />
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

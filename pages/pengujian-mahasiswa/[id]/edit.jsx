@@ -5,7 +5,7 @@ const DetailPengajaran = () => {
   return (
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
-        <Nav title={"Edit Pengajaran"} />
+        <Nav title={"Ubah Pengajaran"} />
       </div>
     </MainLayout>
   );

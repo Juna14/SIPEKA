@@ -6,9 +6,10 @@ import {
   Table,
   TabRiwayatAjuanPerubahanData,
 } from "@/components";
-import { fetchListJabatanFungsional } from "@/helper/api/api";
+import { fetchListJabatanFungsional } from "@/helper/api/apiSister";
 import { id } from "@/helper/constant";
 import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 
@@ -27,7 +28,7 @@ const JabatanFungsional = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Jabatan Fungsional"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Riwayat Jabatan Fungsional
         </h1>
         <div className="flex flex-col md:flex-row gap-2 justify-between">
@@ -64,7 +65,7 @@ const JabatanFungsional = () => {
               ),
             },
           ]}
-          data={jabatan_fungsional?.data}
+          data={jabatan_fungsional}
         />
       </div>
     </MainLayout>

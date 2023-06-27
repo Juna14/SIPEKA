@@ -5,6 +5,18 @@ import * as yup from "yup";
 import { createUser } from "@/helper/api/api";
 
 const schema = yup.object().shape({
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
   name: yup.string().required(),
   email: yup.string().email().required(),
   password: yup.string().required(),
@@ -19,6 +31,19 @@ const FormUsers = () => {
     <>
       <Formik
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           name: "",
           email: "",
           password: "",
@@ -27,8 +52,18 @@ const FormUsers = () => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <Input
               label="name"
               name="name"
@@ -61,7 +96,7 @@ const FormUsers = () => {
               disabled={!isValid}
               className="disabled:cursor-not-allowed ring ring-primary rounded-lg py-2 px-4 bg-primary"
             >
-              {isSubmitting ? "Loading..." : "Submit"}
+              {isSubmitting ? "Memuat..." : "Kirim"}
             </button>
           </Form>
         )}

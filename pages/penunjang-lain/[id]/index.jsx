@@ -21,7 +21,7 @@ const DetailPenunjangLain = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"Detail Penunjang Lain"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Detail Penunjang Lain
         </h1>
         <div className="flex flex-col gap-2 justify-center bg-white dark:bg-slate-800 rounded-xl p-4 divide-y dark:divide-slate-500">
@@ -82,7 +82,6 @@ const DetailPenunjangLain = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -97,7 +96,6 @@ const DetailPenunjangLain = () => {
           </h1>
           <Table
             isLoading={isLoading}
-            searchAble={true}
             columns={[
               { key: "id", title: "No", dataType: "numbering" },
               { key: "nama", title: "nama" },
@@ -135,7 +133,7 @@ const DetailPenunjangLain = () => {
         </div>
         <div className="flex justify-between items-center">
           <Link
-            href={`/penunjang_lain/${id}/edit`}
+            href={`/penunjang-lain/${id}/edit`}
             className="bg-primary rounded-xl py-2 px-4 text-white text-sm"
           >
             <i className="fi-rr-pencil"></i> Ubah Data

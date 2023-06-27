@@ -2,28 +2,37 @@ import React from "react";
 import { Formik, Form } from "formik";
 import {
   Button,
-  Input,
+  FormAnggotaKegiatan,
   KategoriKegiatanSelection,
   MultipleUploadFile,
-  NestedList,
-  Select,
-  StackedTab,
+  Selector,
 } from "..";
 import * as yup from "yup";
 import { createUser, fetchListInpassing } from "@/helper/api/api";
 import { useQuery } from "@tanstack/react-query";
+import { fetchBahanAjar } from "@/helper/api/apiSister";
 
 const schema = yup.object().shape({
-  golongan_pangkat: yup.string().required("jabatan fungsional wajib di isi."),
-  sk: yup.string().required("sk wajib di isi."),
-  tanggal_sk: yup.string().required("kelebihan pengajaran sk wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  golongan_pangkat: yup.string().required("jabatan fungsional wajib diisi."),
+  sk: yup.string().required("sk wajib diisi."),
+  tanggal_sk: yup.string().required("kelebihan pengajaran sk wajib diisi."),
   terhitung_mulai_tanggal: yup
     .string()
-    .required("terhitung mulai tanggal wajib di isi."),
-  masa_kerja_tahun: yup.string().required("kelebihan penelitian wajib di isi."),
-  masa_kerja_bulan: yup
-    .string()
-    .required("kelebihan pengabdian masyarakat wajib di isi."),
+    .required("terhitung mulai tanggal wajib diisi."),
+  masa_kerja_tahun: yup.string().required("kelebihan penelitian wajib diisi."),
+  jenis_bahan_ajar: yup.string().required("jenis bahan ajar wajib diisi."),
 });
 
 const FormCreateBahanAjar = () => {
@@ -32,36 +41,106 @@ const FormCreateBahanAjar = () => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
+          anggota_dosen: [],
+          anggota_mahasiswa: [],
+          anggota_lain: [],
           golongan_pangkat: "",
           sk: "",
           tanggal_sk: "",
           terhitung_mulai_tanggal: "",
           masa_kerja_tahun: "",
-          masa_kerja_bulan: "",
+          jenis_bahan_ajar: "",
         }}
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <KategoriKegiatanSelection
               menu={"bahan_ajar"}
               type={"tree"}
               errors={errors.kategori_kegiatan}
               touched={touched.kategori_kegiatan}
             />
-            <Select
+            <Selector
               label="jenis bahan ajar"
               name="jenis_bahan_ajar"
-              option={[]}
+              placeholder={"Pilih Bahan Ajar"}
+              values={{
+                id: values.jenis_bahan_ajar,
+                nama: values.jenis_bahan_ajar,
+              }}
+              onChange={setFieldValue}
+              queryKey={"bahan_ajar"}
+              queryFn={() => fetchBahanAjar()}
+              valueKey="id"
+              labelKey="nama"
               errors={errors.jenis_bahan_ajar}
               touched={touched.jenis_bahan_ajar}
             />
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
+            <h1 className="uppercase">Anggota Kegiatan (Dosen)</h1>
+            <FormAnggotaKegiatan
+              name={"anggota_dosen"}
+              values={values.anggota_dosen}
+              defaultValue={{
+                id_sdm: "",
+                nama: "",
+                peran: "",
+              }}
+            />
+            <h1 className="uppercase">Anggota Kegiatan (Mahasiswa)</h1>
+            <FormAnggotaKegiatan
+              name={"anggota_mahasiswa"}
+              values={values.anggota_mahasiswa}
+              defaultValue={{
+                id_sdm: "",
+                nama: "",
+                peran: "",
+              }}
+            />
+            <h1 className="uppercase">Anggota Kegiatan (Lain)</h1>
+            <FormAnggotaKegiatan
+              name={"anggota_lain"}
+              values={values.anggota_lain}
+              defaultValue={{
+                id_sdm: "",
+                nama: "",
+                peran: "",
+              }}
+            />
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

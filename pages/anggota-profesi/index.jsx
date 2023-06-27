@@ -17,11 +17,10 @@ const AnggotaProfesi = () => {
     <MainLayout>
       <div className="flex flex-col gap-4 w-full">
         <Nav title={"Anggota Profesi"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Anggota Profesi
         </h1>
         <Table
-          searchAble
           createLink={"/anggota-profesi/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },

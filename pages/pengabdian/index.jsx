@@ -13,7 +13,7 @@ import React, { useState } from "react";
 
 const Pengabdian = () => {
   const [showModal, setShowModal] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(null);
   const {
     data: pengabdian,
     error,
@@ -35,12 +35,11 @@ const Pengabdian = () => {
     >
       <div className="flex flex-col gap-4 dark:text-white w-full h-max">
         <Nav title={"pengabdian"} />
-        <h1 className="text-md uppercase font-bold drop-shadow-lg shadow-white">
+        <h1 className="text-md capitalize font-bold drop-shadow-lg shadow-white">
           Pengabdian
         </h1>
 
         <Table
-          searchAble
           createLink={"/pengabdian/create"}
           columns={[
             { key: "id", title: "No.", dataType: "numbering" },

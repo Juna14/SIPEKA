@@ -17,7 +17,7 @@ const KategoriKegiatanSelection = ({
     queryFn: async () => await fetchKategoriKegiatan(type, menu),
     networkMode: "offlineFirst",
   });
-  if (isLoading) return <>Loading...</>;
+  if (isLoading) return <>Memuat...</>;
   if (type === "list")
     return (
       <Select

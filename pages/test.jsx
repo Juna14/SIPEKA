@@ -1,5 +1,18 @@
-import { MainLayout, Modal, MultipleUploadFile, Table } from "@/components";
+import {
+  GolonganPangkatSelection,
+  Input,
+  MainLayout,
+  Modal,
+  MultipleUploadFile,
+  SelectWithSearch,
+  Selector,
+  Table,
+} from "@/components";
+import List from "@/components/Selections/SelectWithSearch";
+import { fetchGolonganPangkat } from "@/helper/api/api";
+import { fetchBahanAjar } from "@/helper/api/apiSister";
 import useToggle from "@/helper/hooks/useToggle";
+import { useQuery } from "@tanstack/react-query";
 import { Field, FieldArray, Form, Formik } from "formik";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -8,8 +21,10 @@ import React, { useState, useRef, useEffect } from "react";
 const Sidebar = () => {
   const router = useRouter();
   const path = router.asPath.split("/").filter((x) => x);
+  const ref = useRef(null);
   const [search, setSearch] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [selected, setSelected] = useState(null);
   const data = [
     { name: "John", age: 25, city: "New York" },
     { name: "Jane", age: 30, city: "Los Angeles" },
@@ -63,11 +78,31 @@ const Sidebar = () => {
 
   currentPage = 2; // Change the current page
 
+  const [golongan, setGolongan] = useState([]);
+  const { data: golonganpangkat } = useQuery({
+    queryKey: ["golongan-pangkat"],
+    queryFn: async () => await fetchGolonganPangkat(),
+    networkMode: "offlineFirst",
+  });
+
   return (
     <MainLayout>
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           friends: [{ name: "jared", age: 23 }],
         }}
         onSubmit={() => null}
@@ -128,6 +163,19 @@ const Sidebar = () => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           friends: [{ name: "jared", age: 23 }],
         }}
         onSubmit={() => null}
@@ -222,7 +270,12 @@ const Sidebar = () => {
         }
       >
         <Formik>
-          <MultipleUploadFile />
+          <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
         </Formik>
       </Modal> */}
       {/* <div className="bg-gray-100">
@@ -240,10 +293,72 @@ const Sidebar = () => {
           }
         >
           <Formik>
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
           </Formik>
         </Modal>
       </div> */}
+
+      <Formik
+        initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
+          bahan_ajar: "",
+        }}
+        onSubmit={() => null}
+      >
+        {({ isSubmitting, errors, touched, values, setFieldValue }) => (
+          <Form className="flex flex-col gap-2">
+            <Input label={"Input"} name={""} type={"text"} />
+            {/* <GolonganPangkatSelection
+              name={"id_golongan_pangkat"}
+              value={values.id_golongan_pangkat}
+              onChange={setFieldValue}
+            /> */}
+            {/* 
+            <SelectWithSearch
+              label={"search"}
+              name={"search"}
+              onChange={setFieldValue}
+              options={data}
+              labelKey={"name"}
+              valueKey={"name"}
+            /> */}
+            {JSON.stringify(values)}
+            <Selector
+              label={"Bahan Ajar"}
+              placeholder={"Pilih Bahan Ajar"}
+              name="bahan_ajar"
+              values={{
+                id: "",
+                nama: "",
+              }}
+              onChange={setFieldValue}
+              queryKey={"bahan_ajar"}
+              queryFn={() => fetchBahanAjar()}
+              valueKey="id"
+              labelKey="nama"
+              errors={errors.bahan_ajar}
+              touched={touched.bahan_ajar}
+            />
+          </Form>
+        )}
+      </Formik>
     </MainLayout>
   );
 };

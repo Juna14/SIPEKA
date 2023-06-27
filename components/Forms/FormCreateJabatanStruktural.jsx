@@ -9,23 +9,37 @@ import {
   KategoriKegiatanSelection,
   MultipleUploadFile,
   Select,
+  Selector,
   Table,
 } from "..";
 import * as yup from "yup";
 import { createUser } from "@/helper/api/api";
 import { useRouter } from "next/router";
+import { fetchJabatanNegara } from "@/helper/api/apiSister";
 
 const schema = yup.object().shape({
-  jabatan: yup.string().required("jabatan kegiatan wajib di isi."),
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
-  sk_jabatan: yup.string().required("sk_jabatan bidang wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  jabatan: yup.string().required("jabatan kegiatan wajib diisi."),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
+  sk_jabatan: yup.string().required("sk_jabatan bidang wajib diisi."),
   tanggal_mulai_jabatan: yup
     .string()
-    .required("tanggal_mulai_jabatan wajib di isi."),
+    .required("tanggal_mulai_jabatan wajib diisi."),
   tanggal_selesai_jabatan: yup
     .string()
-    .required("tanggal_selesai_jabatan sebelumnya wajib di isi."),
-  lokasi: yup.string().required("lokasi wajib di isi."),
+    .required("tanggal_selesai_jabatan sebelumnya wajib diisi."),
+  lokasi: yup.string().required("lokasi wajib diisi."),
 });
 
 const FormCreateJabatanStruktural = ({ initialValues }) => {
@@ -36,6 +50,19 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           jabatan: initialValues?.jabatan || "",
           kategori_kegiatan: initialValues?.id_kategori_kegiatan || "",
           sk_jabatan: initialValues?.sk_jabatan || "",
@@ -46,26 +73,44 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
-            <Input
-              label="jabatan"
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
+            <Selector
+              label="jabatan tugas"
               name="jabatan"
-              type="text"
-              value={initialValues?.jabatan}
+              placeholder={"Pilih Jabatan"}
+              queryKey={"fetchJabatanNegara"}
+              queryFn={() => fetchJabatanNegara()}
+              onChange={setFieldValue}
+              valueKey={"id"}
+              labelKey={"nama"}
+              values={{
+                id: "",
+                nama: "",
+              }}
               errors={errors.jabatan}
               touched={touched.jabatan}
             />
             <KategoriKegiatanSelection
               type={"tree"}
-              menu={"pembicara"}
+              menu={"jabatan_struktural"}
               name={"kategori_kegiatan"}
               value={initialValues?.id_kategori_kegiatan}
               errors={errors.kategori_kegiatan}
               touched={touched.kategori_kegiatan}
             />
             <Input
-              label="No SK Penugasan"
+              label="No SK Jabatan Struktural"
               name="sk_jabatan"
               type="text"
               value={initialValues?.sk_jabatan}
@@ -73,7 +118,7 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
               touched={touched.sk_jabatan}
             />
             <Input
-              label="tanggal pelaksanaan"
+              label="terhitung mulai tanggal"
               name="tanggal_mulai_jabatan"
               type="date"
               value={initialValues?.tanggal_mulai_jabatan}
@@ -81,7 +126,7 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
               touched={touched.tanggal_mulai_jabatan}
             />
             <Input
-              label="tanggal_selesai_jabatan"
+              label="terhitung selesai tanggal"
               name="tanggal_selesai_jabatan"
               type="date"
               value={initialValues?.tanggal_selesai_jabatan}
@@ -89,7 +134,7 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
               touched={touched.tanggal_selesai_jabatan}
             />
             <Input
-              label="lokasi"
+              label="lokasi penugasan"
               name="lokasi"
               type="text"
               value={initialValues?.lokasi}
@@ -97,7 +142,12 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
               touched={touched.lokasi}
             />
 
-            <MultipleUploadFile data={initialValues?.dokumen}>
+            <MultipleUploadFile
+              setFieldValue={setFieldValue}
+              values={values}
+              errors={errors}
+              touched={touched}
+            >
               {router.pathname.includes("edit") && initialValues?.dokumen && (
                 <Table
                   columns={[
@@ -106,10 +156,10 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
                     { key: "jenis_file", title: "jenis file" },
                     {
                       key: "tanggal_upload",
-                      title: "tanggal_upload",
-                      render: (val) => dateFormater(val.tanggal_upload),
+                      title: "tanggal upload",
+                      dataType: "date",
                     },
-                    { key: "jenis_dokumen", title: "jenis_dokumen" },
+                    { key: "jenis_dokumen", title: "jenis dokumen" },
                     {
                       key: "action",
                       title: "aksi",
@@ -130,7 +180,7 @@ const FormCreateJabatanStruktural = ({ initialValues }) => {
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

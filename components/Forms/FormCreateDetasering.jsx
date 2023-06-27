@@ -16,19 +16,31 @@ import { createUser, fetchListInpassing } from "@/helper/api/api";
 import { useQuery } from "@tanstack/react-query";
 
 const schema = yup.object().shape({
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
   perguruan_tinggi_sasaran: yup
     .string()
-    .required("tingkat penghargaan wajib di isi."),
-  tanggal_mulai: yup.string().required("nama penghargaan wajib di isi."),
-  tanggal_selesai: yup.string().required("tanggal_selesai wajib di isi."),
-  bidang_tugas: yup.string().required("bidang tugas wajib di isi."),
-  deskripsi_kegiatan: yup.string().required("deskripsi kegiatan wajib di isi."),
-  metode_pelaksanaan: yup.string().required("metode pelaksanaan wajib di isi."),
-  sk_penugasan: yup.string().required("nomor sk penugasan wajib di isi."),
+    .required("tingkat penghargaan wajib diisi."),
+  tanggal_mulai: yup.string().required("nama penghargaan wajib diisi."),
+  tanggal_selesai: yup.string().required("tanggal_selesai wajib diisi."),
+  bidang_tugas: yup.string().required("bidang tugas wajib diisi."),
+  deskripsi_kegiatan: yup.string().required("deskripsi kegiatan wajib diisi."),
+  metode_pelaksanaan: yup.string().required("metode pelaksanaan wajib diisi."),
+  sk_penugasan: yup.string().required("nomor sk penugasan wajib diisi."),
   tanggal_sk_penugasan: yup
     .string()
-    .required("tanggal sk penugasan wajib di isi."),
+    .required("tanggal sk penugasan wajib diisi."),
 });
 
 const FormCreatePenghargaan = () => {
@@ -37,6 +49,19 @@ const FormCreatePenghargaan = () => {
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           kategori_kegiatan: "",
           tingkat_penghargaan: "",
           tanggal_mulai: "",
@@ -50,10 +75,21 @@ const FormCreatePenghargaan = () => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <KategoriKegiatanSelection
-              type="list"
+              type="tree"
+              menu={"detasering"}
               errors={errors.kategori_kegiatan}
               touched={touched.kategori_kegiatan}
             />
@@ -111,11 +147,16 @@ const FormCreatePenghargaan = () => {
               errors={errors.tanggal_sk_penugasan}
               touched={touched.tanggal_sk_penugasan}
             />
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            />
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}

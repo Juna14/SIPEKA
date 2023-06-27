@@ -1,6 +1,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import {
+  Action,
   Button,
   Input,
   KategoriKegiatanSelection,
@@ -8,41 +9,71 @@ import {
   NestedList,
   PerguruanTinggiSelection,
   Select,
+  Selector,
   StackedTab,
+  Table,
 } from "..";
 import * as yup from "yup";
 import { createUser, fetchListInpassing } from "@/helper/api/api";
 import { useQuery } from "@tanstack/react-query";
+import { fetchPerguruanTinggi } from "@/helper/api/apiSister";
+import { useRouter } from "next/router";
 
 const schema = yup.object().shape({
-  kategori_kegiatan: yup.string().required("kategori kegiatan wajib di isi."),
+  dokumen: yup.array().of(
+    yup
+      .object()
+      .shape({
+        id_jenis_dokumen: yup.string().required("jenis dokumen wajib diisi."),
+        file: yup.string().required("file wajib diisi."),
+        nama: yup.string().required("nama dokumen wajib diisi."),
+        tautan: yup.string().required("tautan wajib diisi."),
+        keterangan: yup.string().required("keterangan wajib diisi."),
+      })
+      .required("dokumen wajib diisi.")
+  ),
+  kategori_kegiatan: yup.string().required("kategori kegiatan wajib diisi."),
   jenis_tugas_tambahan: yup
     .string()
-    .required("jenis tugas tambahan wajib di isi."),
+    .required("jenis tugas tambahan wajib diisi."),
   ptn_tugas_tambahan: yup
     .string()
-    .required("perguruan tinggi penugasan wajib di isi."),
-  unit_kerja: yup.string().required("unit kerja wajib di isi."),
-  jumlah_jam_diakui: yup.string().required("jumlah jam diakui wajib di isi."),
-  sk: yup.string().required("sk wajib di isi."),
-  tanggal_sk: yup.string().required("kelebihan pengajaran sk wajib di isi."),
+    .required("perguruan tinggi penugasan wajib diisi."),
+  unit_kerja: yup.string().required("unit kerja wajib diisi."),
+  jumlah_jam_diakui: yup.string().required("jumlah jam diakui wajib diisi."),
+  sk: yup.string().required("sk wajib diisi."),
+  tanggal_sk: yup.string().required("kelebihan pengajaran sk wajib diisi."),
   terhitung_mulai_tanggal: yup
     .string()
-    .required("terhitung mulai tanggal wajib di isi."),
+    .required("terhitung mulai tanggal wajib diisi."),
   tanggal_berakhir_tugas: yup
     .string()
-    .required("kelebihan penelitian wajib di isi."),
+    .required("kelebihan penelitian wajib diisi."),
   jenis_tugas_tambahan: yup
     .string()
-    .required("kelebihan pengabdian masyarakat wajib di isi."),
+    .required("kelebihan pengabdian masyarakat wajib diisi."),
 });
 
-const FormCreateTugasTambahan = () => {
+const FormCreateTugasTambahan = ({ initialValues }) => {
+  const router = useRouter();
   return (
     <>
       <Formik
         enableReinitialize
         initialValues={{
+          dokumen: [
+            {
+              id: "",
+              id_jenis_dokumen: "",
+              nama: "",
+              keterangan: "",
+              tanggal_upload: "",
+              tautan: "",
+              jenis_file: "",
+              nama_file: "",
+              jenis_dokumen: "",
+            },
+          ],
           kategori_kegiatan: "",
           jenis_tugas_tambahan: "",
           ptn_tugas_tambahan: "",
@@ -56,8 +87,18 @@ const FormCreateTugasTambahan = () => {
         validationSchema={schema}
         onSubmit={(values, { setErrors, setStatus }) => null}
       >
-        {({ isSubmitting, errors, touched, status, isValid }) => (
-          <Form className="flex flex-col gap-4">
+        {({
+          isSubmitting,
+          errors,
+          touched,
+          values,
+          isValid,
+          setFieldValue,
+        }) => (
+          <Form
+            className="flex flex-col gap-4"
+            onClick={(e) => e.preventDefault()}
+          >
             <KategoriKegiatanSelection
               menu={"tugas_tambahan"}
               type={"tree"}
@@ -71,10 +112,21 @@ const FormCreateTugasTambahan = () => {
               errors={errors.jenis_tugas_tambahan}
               touched={touched.jenis_tugas_tambahan}
             />
-            <PerguruanTinggiSelection
+            <Selector
+              name={"ptn_tugas_tambahan"}
               label="perguruan tinggi penugasan"
               errors={errors.ptn_tugas_tambahan}
               touched={touched.ptn_tugas_tambahan}
+              onChange={setFieldValue}
+              queryKey={"ptn_tugas_tambahan"}
+              queryFn={() => fetchPerguruanTinggi()}
+              labelKey={"nama"}
+              valueKey={"id"}
+              placeholder={"Pilih perguruan tinggi"}
+              values={{
+                nama: "",
+                id: "",
+              }}
             />
             <Select
               label="Unit Kerja"
@@ -111,11 +163,45 @@ const FormCreateTugasTambahan = () => {
               errors={errors.tanggal_berakhir_tugas}
               touched={touched.tanggal_berakhir_tugas}
             />
-            <MultipleUploadFile />
+            <MultipleUploadFile
+              values={values}
+              errors={errors}
+              touched={touched}
+              setFieldValue={setFieldValue}
+            >
+              {router.pathname.includes("edit") && initialValues?.dokumen && (
+                <Table
+                  columns={[
+                    { key: "id", title: "No.", dataType: "numbering" },
+                    { key: "nama_file", title: "nama file" },
+                    { key: "jenis_file", title: "jenis file" },
+                    {
+                      key: "tanggal_upload",
+                      title: "tanggal upload",
+                      dataType: "date",
+                    },
+                    { key: "jenis_dokumen", title: "jenis dokumen" },
+                    {
+                      key: "action",
+                      title: "aksi",
+                      align: "center",
+                      render: (val) => (
+                        <Action
+                          param={val}
+                          baseUrl={"/dokumen"}
+                          action={["detail", "edit", "delete"]}
+                        />
+                      ),
+                    },
+                  ]}
+                  data={initialValues?.dokumen}
+                />
+              )}
+            </MultipleUploadFile>
             <Button
               disabled={!isValid}
               type={"submit"}
-              text={isSubmitting ? "Loading..." : "Ajukan perubahan"}
+              text={isSubmitting ? "Memuat..." : "Ajukan perubahan"}
             />
           </Form>
         )}
